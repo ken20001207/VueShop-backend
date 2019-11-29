@@ -41,6 +41,29 @@ router.get('/items', function(req, res, next) {
     connection.end();
 });
 
+/* Get item. */
+router.get('/item/:id', function(req, res, next) {
+
+    connection = mysql.createConnection(connection.config);
+    connection.connect();
+
+    connection.query('SELECT * FROM `vueshop_demo`.`items` WHERE `id`=' + req.params.id, function(err, rows) {
+
+        res.writeHead(200, { 'Content-Type': 'text/html;charset=utf-8' });
+        res.write("{\"items\":[");
+
+        Object.keys(rows).forEach(function(key) {
+
+            var row = rows[key];
+
+            res.write(row.data);
+        });
+        res.end();
+    });
+
+    connection.end();
+});
+
 /* Get all classes. */
 router.get('/classes', function(req, res, next) {
 
